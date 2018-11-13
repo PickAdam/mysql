@@ -1,0 +1,145 @@
+Microsoft Windows [版本 10.0.17134.376]
+(c) 2018 Microsoft Corporation。保留所有权利。
+
+C:\WINDOWS\system32>mysql -u root -p
+Enter password: ******
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 27
+Server version: 8.0.12 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use sar;
+Database changed
+mysql>  create table wlh(id int primary key not null unique auto_increment,name varchar(20) not null unique,money int(20));
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> desc wlh;
++-------+-------------+------+-----+---------+----------------+
+| Field | Type        | Null | Key | Default | Extra          |
++-------+-------------+------+-----+---------+----------------+
+| id    | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(20) | NO   | UNI | NULL    |                |
+| money | int(20)     | YES  |     | NULL    |                |
++-------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> alter table wlh modify money int zerofill;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc wlh;
++-------+---------------------------+------+-----+---------+----------------+
+| Field | Type                      | Null | Key | Default | Extra          |
++-------+---------------------------+------+-----+---------+----------------+
+| id    | int(11)                   | NO   | PRI | NULL    | auto_increment |
+| name  | varchar(20)               | NO   | UNI | NULL    |                |
+| money | int(10) unsigned zerofill | YES  |     | NULL    |                |
++-------+---------------------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> alter table wlh add num int(18);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table wlh add product varchar(20);
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc wlh;
++---------+---------------------------+------+-----+---------+----------------+
+| Field   | Type                      | Null | Key | Default | Extra          |
++---------+---------------------------+------+-----+---------+----------------+
+| id      | int(11)                   | NO   | PRI | NULL    | auto_increment |
+| name    | varchar(20)               | NO   | UNI | NULL    |                |
+| money   | int(10) unsigned zerofill | YES  |     | NULL    |                |
+| num     | int(18)                   | YES  |     | NULL    |                |
+| product | varchar(20)               | YES  |     | NULL    |                |
++---------+---------------------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into wlh(id,name,money,num,product)values(1,'aarom',100,2,'shoes');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into wlh(name,money,num,product)values('joke',20,1,'t-shirt');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> insert into wlh(name,money,num,product)values('kris',400,3,'clothes');
+Query OK, 1 row affected (0.12 sec)
+
+mysql> select * from wlh;
++----+-------+------------+------+---------+
+| id | name  | money      | num  | product |
++----+-------+------------+------+---------+
+|  1 | aarom | 0000000100 |    2 | shoes   |
+|  2 | joke  | 0000000020 |    1 | t-shirt |
+|  3 | kris  | 0000000400 |    3 | clothes |
++----+-------+------------+------+---------+
+3 rows in set (0.00 sec)
+
+mysql> insert into wlh(name,money,num,product)values('kk',300,3,'clothes shoes');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> select * from wlh;
++----+-------+------------+------+---------------+
+| id | name  | money      | num  | product       |
++----+-------+------------+------+---------------+
+|  1 | aarom | 0000000100 |    2 | shoes         |
+|  2 | joke  | 0000000020 |    1 | t-shirt       |
+|  3 | kris  | 0000000400 |    3 | clothes       |
+|  4 | kk    | 0000000300 |    3 | clothes shoes |
++----+-------+------------+------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> update wlh set product="shoes" where id=1;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> select * from wlh;
++----+-------+------------+------+---------------+
+| id | name  | money      | num  | product       |
++----+-------+------------+------+---------------+
+|  1 | aarom | 0000000100 |    2 | shoes         |
+|  2 | joke  | 0000000020 |    1 | t-shirt       |
+|  3 | kris  | 0000000400 |    3 | clothes       |
+|  4 | kk    | 0000000300 |    3 | clothes shoes |
++----+-------+------------+------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> alter table wlh add isDelete int(1) default 0;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from wlh;
++----+-------+------------+------+---------------+----------+
+| id | name  | money      | num  | product       | isDelete |
++----+-------+------------+------+---------------+----------+
+|  1 | aarom | 0000000100 |    2 | shoes         |        0 |
+|  2 | joke  | 0000000020 |    1 | t-shirt       |        0 |
+|  3 | kris  | 0000000400 |    3 | clothes       |        0 |
+|  4 | kk    | 0000000300 |    3 | clothes shoes |        0 |
++----+-------+------------+------+---------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> update wlh set  isDelete=2 where id=2;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from wlh;
++----+-------+------------+------+---------------+----------+
+| id | name  | money      | num  | product       | isDelete |
++----+-------+------------+------+---------------+----------+
+|  1 | aarom | 0000000100 |    2 | shoes         |        0 |
+|  2 | joke  | 0000000020 |    1 | t-shirt       |        2 |
+|  3 | kris  | 0000000400 |    3 | clothes       |        0 |
+|  4 | kk    | 0000000300 |    3 | clothes shoes |        0 |
++----+-------+------------+------+---------------+----------+
+4 rows in set (0.00 sec)
+
+mysql>
